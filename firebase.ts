@@ -1,10 +1,8 @@
 
 import { initializeApp } from "firebase/app";
-import { getAnalytics, isSupported } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBUMLkGc9n6x_V-L1I4-vRHy-XW06a0Tb0",
   authDomain: "thsc-bd84a.firebaseapp.com",
@@ -17,12 +15,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize Analytics safely
-export const analytics = typeof window !== 'undefined' 
-  ? isSupported().then(yes => yes ? getAnalytics(app) : null)
-  : Promise.resolve(null);
-
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export default app;

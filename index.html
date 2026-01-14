@@ -11,21 +11,17 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
     }
     h1, h2, h3, .font-serif {
       font-family: 'Playfair Display', serif;
     }
-    .nysc-green { color: #006400; }
-    .bg-nysc-green { background-color: #006400; }
-    .border-nysc-green { border-color: #006400; }
-    
-    /* Loading Animation */
+    .loading-pulse {
+      animation: pulse-gold 2s infinite ease-in-out;
+    }
     @keyframes pulse-gold {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.5; transform: scale(1.05); }
-    }
-    .loading-pulse {
-      animation: pulse-gold 2s infinite ease-in-out;
     }
   </style>
 <script type="importmap">
@@ -33,13 +29,14 @@
   "imports": {
     "react": "https://esm.sh/react@19.0.0",
     "react/": "https://esm.sh/react@19.0.0/",
-    "@google/genai": "https://esm.sh/@google/genai@1.35.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
     "react-dom/": "https://esm.sh/react-dom@19.0.0/",
+    "@google/genai": "https://esm.sh/@google/genai@1.35.0",
     "lucide-react": "https://esm.sh/lucide-react@0.475.0",
-    "firebase/app": "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js",
-    "firebase/auth": "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js",
-    "firebase/firestore": "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js",
-    "firebase/analytics": "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js",
+    "firebase/app": "https://esm.sh/firebase@11.3.1/app",
+    "firebase/auth": "https://esm.sh/firebase@11.3.1/auth",
+    "firebase/firestore": "https://esm.sh/firebase@11.3.1/firestore",
+    "firebase/analytics": "https://esm.sh/firebase@11.3.1/analytics",
     "firebase/": "https://esm.sh/firebase@^12.7.0/"
   }
 }
