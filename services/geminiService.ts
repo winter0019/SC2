@@ -1,15 +1,28 @@
 
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 
 export class GeminiService {
-  private ai: GoogleGenAI;
+  private ai: GoogleGenAI | null = null;
 
   constructor() {
-    // Fixed: Initializing GoogleGenAI with process.env.API_KEY directly as per guidelines
-    this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    try {
+      // Safely access process.env to prevent ReferenceError in browser environments where 'process' is not defined
+      const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : '';
+      if (apiKey) {
+        this.ai = new GoogleGenAI({ apiKey });
+      } else {
+        console.warn("Gemini API Key is not configured in process.env.API_KEY");
+      }
+    } catch (error) {
+      console.error("Failed to initialize Gemini Service:", error);
+    }
   }
 
   async generateTribute(senderName: string, relationship: string, memory: string): Promise<string> {
+    if (!this.ai) {
+      return "Hearty congratulations to Alhaji Ibrahim Saidu on a meritorious career. Your leadership and dedication have left an indelible mark on NYSC.";
+    }
+
     const prompt = `
       Write a formal, elegant, and heartwarming retirement tribute for Alhaji Ibrahim Saidu.
       Alhaji Ibrahim Saidu is the 20th State Coordinator of NYSC Katsina State, retiring on April 30, 2026.
