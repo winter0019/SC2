@@ -41,13 +41,13 @@ const Countdown: React.FC<{ targetDate: string }> = ({ targetDate }) => {
   ];
 
   return (
-    <div className="grid grid-cols-2 xs:flex xs:justify-center gap-4 sm:gap-6 md:gap-8 my-4 md:my-8 w-full max-w-lg">
+    <div className="grid grid-cols-2 xs:flex xs:justify-center gap-4 sm:gap-6 my-4 w-full max-w-md mx-auto">
       {items.map((item) => (
         <div key={item.label} className="flex flex-col items-center flex-1">
-          <div className="bg-white border-[3px] md:border-4 border-nysc-green shadow-lg md:shadow-xl rounded-[1.5rem] md:rounded-[2rem] w-full aspect-square xs:w-20 xs:h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 flex items-center justify-center mb-2 md:mb-4 transition-all hover:scale-105 active:scale-95">
-            <span className="text-2xl sm:text-3xl md:text-5xl font-black text-nysc-green tracking-tighter">{item.value}</span>
+          <div className="bg-white border-2 border-nysc-green shadow-lg rounded-2xl w-full aspect-square xs:w-16 xs:h-16 sm:w-20 sm:h-20 flex items-center justify-center mb-1.5 transition-all hover:scale-105">
+            <span className="text-xl sm:text-2xl font-black text-nysc-green tracking-tighter">{item.value}</span>
           </div>
-          <span className="text-[8px] md:text-xs uppercase tracking-[0.2em] text-gray-400 font-black">{item.label}</span>
+          <span className="text-[7px] md:text-[8px] uppercase tracking-[0.2em] text-gray-400 font-black">{item.label}</span>
         </div>
       ))}
     </div>
