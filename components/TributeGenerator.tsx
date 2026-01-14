@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { geminiService } from '../services/geminiService';
 import { Sparkles, Send, Loader2, Wand2, ShieldAlert } from 'lucide-react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -16,6 +16,8 @@ const TributeGenerator: React.FC<TributeGeneratorProps> = ({ isAuthReady }) => {
   const [loading, setLoading] = useState(false);
   const [posting, setPosting] = useState(false);
   const [generatedTribute, setGeneratedTribute] = useState('');
+  
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const handleGenerate = async () => {
     if (!name || !relation || !memory) return;
@@ -23,13 +25,17 @@ const TributeGenerator: React.FC<TributeGeneratorProps> = ({ isAuthReady }) => {
     const tribute = await geminiService.generateTribute(name, relation, memory);
     setGeneratedTribute(tribute);
     setLoading(false);
+    
+    // Smoothly scroll to the generated content
+    setTimeout(() => {
+      resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
   };
 
   const handlePost = async () => {
     if (!generatedTribute || !isAuthReady) return;
     setPosting(true);
     try {
-      // Changed collection to 'achievements' as defined in security rules
       await addDoc(collection(db, 'achievements'), {
         name,
         relationship: relation,
@@ -37,67 +43,66 @@ const TributeGenerator: React.FC<TributeGeneratorProps> = ({ isAuthReady }) => {
         date: new Date().toLocaleDateString(),
         timestamp: serverTimestamp()
       });
-      // Reset form
       setName('');
       setRelation('');
       setMemory('');
       setGeneratedTribute('');
     } catch (error) {
       console.error("Error posting achievement:", error);
-      alert("Cloud connection issues. Ensure you have configured your Firestore security rules correctly.");
+      alert("Failed to post. Check your connection.");
     } finally {
       setPosting(false);
     }
   };
 
   return (
-    <div className="bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-gray-100 max-w-2xl mx-auto mb-20 relative">
+    <div className="bg-white rounded-[2rem] md:rounded-[3rem] shadow-2xl overflow-hidden border border-gray-100 max-w-2xl mx-auto mb-12 md:mb-20 relative text-left">
       {!isAuthReady && (
-        <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-8 text-center">
-           <ShieldAlert className="w-12 h-12 text-amber-500 mb-4" />
-           <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Awaiting Secure Cloud Link...</p>
+        <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-6 sm:p-8 text-center">
+           <ShieldAlert className="w-10 h-10 md:w-12 md:h-12 text-amber-500 mb-4" />
+           <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-500">Connecting to Cloud Server...</p>
         </div>
       )}
       
-      <div className="bg-nysc-green p-10 text-white text-center">
-        <div className="w-16 h-16 bg-white/10 rounded-[1.5rem] flex items-center justify-center mx-auto mb-6 backdrop-blur-md">
-          <Wand2 className="w-8 h-8 text-amber-400" />
+      <div className="bg-nysc-green p-8 md:p-10 text-white text-center">
+        <div className="w-12 h-12 md:w-16 md:h-16 bg-white/10 rounded-xl md:rounded-[1.5rem] flex items-center justify-center mx-auto mb-4 md:mb-6 backdrop-blur-md">
+          <Wand2 className="w-6 h-6 md:w-8 md:h-8 text-amber-400" />
         </div>
-        <h3 className="text-2xl font-black font-serif italic mb-2">AI Memory Assistant</h3>
-        <p className="text-green-100 text-sm opacity-80 uppercase tracking-widest font-medium">Craft a heartfelt message</p>
+        <h3 className="text-xl md:text-2xl font-black font-serif italic mb-1 md:mb-2">AI Memory Assistant</h3>
+        <p className="text-green-100 text-[10px] md:text-sm opacity-80 uppercase tracking-widest font-medium">Craft a heartfelt message</p>
       </div>
       
-      <div className="p-10 space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="p-6 md:p-10 space-y-6 md:space-y-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
           <div>
-            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 ml-1">Your Full Name</label>
+            <label className="block text-[8px] md:text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 md:mb-3 ml-1">Full Name</label>
             <input 
               type="text" 
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-nysc-green focus:bg-white outline-none transition-all font-bold"
+              className="w-full px-5 md:px-6 py-3 md:py-4 bg-gray-50 border border-gray-100 rounded-xl md:rounded-2xl focus:ring-2 focus:ring-nysc-green focus:bg-white outline-none transition-all font-bold text-sm"
               placeholder="e.g. John Doe"
             />
           </div>
           <div>
-            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 ml-1">Relationship</label>
+            <label className="block text-[8px] md:text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 md:mb-3 ml-1">Relationship</label>
             <input 
               type="text" 
               value={relation}
               onChange={(e) => setRelation(e.target.value)}
-              className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-nysc-green focus:bg-white outline-none transition-all font-bold"
+              className="w-full px-5 md:px-6 py-3 md:py-4 bg-gray-50 border border-gray-100 rounded-xl md:rounded-2xl focus:ring-2 focus:ring-nysc-green focus:bg-white outline-none transition-all font-bold text-sm"
               placeholder="e.g. Former Colleague"
             />
           </div>
         </div>
         
         <div>
-          <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 ml-1">Your Message or Shared Memory</label>
+          <label className="block text-[8px] md:text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 md:mb-3 ml-1">Message or Shared Memory</label>
           <textarea 
             rows={4}
             value={memory}
             onChange={(e) => setMemory(e.target.value)}
-            className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-nysc-green focus:bg-white outline-none transition-all font-medium italic"
+            className="w-full px-5 md:px-6 py-3 md:py-4 bg-gray-50 border border-gray-100 rounded-xl md:rounded-2xl focus:ring-2 focus:ring-nysc-green focus:bg-white outline-none transition-all font-medium italic text-sm"
             placeholder="Share a brief memory or quality you admire..."
           />
         </div>
@@ -106,30 +111,30 @@ const TributeGenerator: React.FC<TributeGeneratorProps> = ({ isAuthReady }) => {
           <button 
             onClick={handleGenerate}
             disabled={loading || !name || !relation || !memory || !isAuthReady}
-            className="w-full bg-nysc-green text-white py-5 rounded-[2rem] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all disabled:bg-gray-200 text-xs"
+            className="w-full bg-nysc-green text-white py-4 md:py-5 rounded-[1.5rem] md:rounded-[2rem] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-2xl hover:scale-[1.01] active:scale-[0.98] transition-all disabled:bg-gray-100 text-[10px] md:text-xs"
           >
             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5 text-amber-400" />}
-            Generate Polished Tribute
+            Generate Tribute
           </button>
         ) : (
-          <div className="space-y-6 animate-in fade-in zoom-in duration-300">
-            <div className="p-8 bg-amber-50 rounded-[2rem] border border-amber-100 italic text-gray-800 leading-relaxed text-lg shadow-inner">
+          <div ref={resultRef} className="space-y-6 animate-in fade-in zoom-in duration-500">
+            <div className="p-6 md:p-8 bg-amber-50 rounded-[1.5rem] md:rounded-[2rem] border border-amber-100 italic text-gray-800 leading-relaxed text-base md:text-lg shadow-inner">
               "{generatedTribute}"
             </div>
-            <div className="flex gap-4">
+            <div className="flex flex-col xs:flex-row gap-3 md:gap-4">
               <button 
                 onClick={() => setGeneratedTribute('')}
-                className="flex-1 py-4 text-gray-400 font-black uppercase text-[10px] tracking-widest hover:text-gray-600 transition-all"
+                className="flex-1 py-3 md:py-4 text-gray-400 font-black uppercase text-[8px] md:text-[10px] tracking-widest hover:text-gray-600 transition-all text-center"
               >
-                Start Over
+                Edit Details
               </button>
               <button 
                 onClick={handlePost}
                 disabled={posting || !isAuthReady}
-                className="flex-[2] bg-nysc-green text-white py-4 rounded-[1.5rem] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-2xl transition-all shadow-xl shadow-green-900/20 text-[10px]"
+                className="flex-[2] bg-nysc-green text-white py-3 md:py-4 rounded-xl md:rounded-[1.5rem] font-black uppercase tracking-widest flex items-center justify-center gap-2 md:gap-3 hover:shadow-2xl transition-all shadow-xl shadow-green-900/20 text-[9px] md:text-[10px]"
               >
                 {posting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                Post to Tribute Wall
+                Post Tribute
               </button>
             </div>
           </div>

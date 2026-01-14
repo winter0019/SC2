@@ -67,38 +67,38 @@ const ImageGallery: React.FC<{ isAdmin: boolean; isAuthReady: boolean }> = ({ is
     : images.filter(img => img.category === activeCategory);
 
   return (
-    <div className="space-y-16">
-      <div className="flex flex-col md:flex-row items-center gap-8 border-b border-gray-100 pb-12">
-        <div className="flex flex-wrap justify-center gap-3">
+    <div className="space-y-8 md:space-y-16">
+      <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 border-b border-gray-100 pb-8 md:pb-12">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 w-full md:w-auto">
           {['All', ...GALLERY_CATEGORIES].map(cat => (
-            <button key={cat} onClick={() => setActiveCategory(cat)} className={`px-10 py-5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeCategory === cat ? 'bg-[#012616] text-white shadow-xl scale-105' : 'bg-white text-gray-400 border border-gray-100 hover:text-[#012616]'}`}>
+            <button key={cat} onClick={() => setActiveCategory(cat)} className={`px-5 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest transition-all ${activeCategory === cat ? 'bg-[#012616] text-white shadow-xl scale-105' : 'bg-white text-gray-400 border border-gray-100 hover:text-[#012616]'}`}>
               {cat}
             </button>
           ))}
         </div>
         {isAdmin && (
-          <button onClick={() => fileInputRef.current?.click()} className="md:ml-auto flex items-center gap-4 bg-amber-500 text-black px-10 py-5 rounded-[2rem] font-black uppercase text-[10px] tracking-widest hover:bg-amber-400 shadow-xl transition-all">
-            <PlusCircle size={20} /> Add to Archive
+          <button onClick={() => fileInputRef.current?.click()} className="md:ml-auto flex items-center justify-center gap-3 bg-amber-500 text-black px-8 md:px-10 py-4 md:py-5 rounded-[1.5rem] md:rounded-[2rem] font-black uppercase text-[8px] md:text-[10px] tracking-widest hover:bg-amber-400 shadow-xl transition-all w-full md:w-auto">
+            <PlusCircle size={18} /> Add Entry
           </button>
         )}
       </div>
 
       <input type="file" ref={fileInputRef} className="hidden" onChange={handleFilePick} accept="image/*" />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-10">
         {filteredImages.length === 0 ? (
-          <div className="col-span-full py-20 text-center text-gray-300 font-black uppercase tracking-widest text-xs">No entries found.</div>
+          <div className="col-span-full py-16 md:py-20 text-center text-gray-300 font-black uppercase tracking-widest text-[10px] md:text-xs">No entries found in this archive.</div>
         ) : (
           filteredImages.map((image) => (
-            <div key={image.id} className="group relative aspect-[4/5] overflow-hidden rounded-[4rem] bg-gray-50 cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-700 border-8 border-white" onClick={() => setSelectedImage(image)}>
-              <img src={image.url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#012616] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-12">
-                <span className="text-amber-400 text-[8px] font-black uppercase tracking-[0.5em] mb-3">{image.category}</span>
-                <p className="text-white text-xl font-black font-serif italic leading-tight">{image.caption}</p>
+            <div key={image.id} className="group relative aspect-[4/5] overflow-hidden rounded-[2rem] md:rounded-[4rem] bg-gray-50 cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-700 border-4 md:border-8 border-white" onClick={() => setSelectedImage(image)}>
+              <img src={image.url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#012616] via-[#012616]/20 to-transparent opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6 md:p-12">
+                <span className="text-amber-400 text-[6px] md:text-[8px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] mb-2 md:mb-3">{image.category}</span>
+                <p className="text-white text-base md:text-xl font-black font-serif italic leading-tight line-clamp-2">{image.caption}</p>
               </div>
               {isAdmin && (
-                <button onClick={(e) => { e.stopPropagation(); if(confirm("Delete entry?")) deleteDoc(doc(db, 'gallery', image.id)); }} className="absolute top-8 right-8 p-4 bg-red-600 text-white rounded-2xl opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 shadow-2xl">
-                  <Trash2 size={18} />
+                <button onClick={(e) => { e.stopPropagation(); if(confirm("Delete entry?")) deleteDoc(doc(db, 'gallery', image.id)); }} className="absolute top-4 right-4 md:top-8 md:right-8 p-3 md:p-4 bg-red-600 text-white rounded-xl md:rounded-2xl opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 shadow-2xl">
+                  <Trash2 size={14} className="md:w-[18px] md:h-[18px]" />
                 </button>
               )}
             </div>
@@ -107,21 +107,21 @@ const ImageGallery: React.FC<{ isAdmin: boolean; isAuthReady: boolean }> = ({ is
       </div>
 
       {uploadingFile && (
-        <div className="fixed inset-0 z-[2500] flex items-center justify-center p-6 bg-[#012616]/98 backdrop-blur-3xl">
-          <div className="bg-white rounded-[5rem] w-full max-w-xl shadow-2xl p-16 space-y-12 relative">
-            <button onClick={() => setUploadingFile(null)} className="absolute top-10 right-10 p-3 hover:bg-gray-100 rounded-full"><X size={32} /></button>
-            <h3 className="text-4xl font-black font-serif italic text-[#012616] text-center">New Entry</h3>
-            {errorMsg && <div className="p-5 bg-red-50 text-red-600 rounded-3xl text-[10px] font-black uppercase flex items-center gap-3"><AlertTriangle size={16} /> {errorMsg}</div>}
-            <div className="aspect-video rounded-[3rem] overflow-hidden shadow-2xl border-4 border-slate-50">
+        <div className="fixed inset-0 z-[2500] flex items-center justify-center p-4 sm:p-6 bg-[#012616]/98 backdrop-blur-3xl">
+          <div className="bg-white rounded-[2.5rem] sm:rounded-[5rem] w-full max-w-xl shadow-2xl p-8 sm:p-16 space-y-8 sm:space-y-12 relative max-h-[90vh] overflow-y-auto no-scrollbar">
+            <button onClick={() => setUploadingFile(null)} className="absolute top-6 right-6 sm:top-10 sm:right-10 p-3 hover:bg-gray-100 rounded-full"><X size={24} className="sm:w-8 sm:h-8" /></button>
+            <h3 className="text-3xl sm:text-4xl font-black font-serif italic text-[#012616] text-center">New Entry</h3>
+            {errorMsg && <div className="p-4 bg-red-50 text-red-600 rounded-2xl text-[10px] font-black uppercase flex items-center gap-2"><AlertTriangle size={14} /> {errorMsg}</div>}
+            <div className="aspect-video rounded-[1.5rem] sm:rounded-[3rem] overflow-hidden shadow-2xl border-4 border-slate-50">
               <img src={uploadingFile.url} className="w-full h-full object-cover" />
             </div>
-            <div className="space-y-8">
-              <input value={tempCaption} onChange={e => setTempCaption(e.target.value)} className="w-full px-8 py-6 bg-slate-50 border border-slate-100 rounded-3xl outline-none font-bold" placeholder="Context/Description..." />
-              <select value={tempCategory} onChange={e => setTempCategory(e.target.value)} className="w-full px-8 py-6 bg-slate-50 border border-slate-100 rounded-3xl outline-none font-black uppercase text-[11px]">
+            <div className="space-y-6 sm:space-y-8">
+              <input value={tempCaption} onChange={e => setTempCaption(e.target.value)} className="w-full px-6 sm:px-8 py-4 sm:py-6 bg-slate-50 border border-slate-100 rounded-2xl sm:rounded-3xl outline-none font-bold text-sm" placeholder="Context/Description..." />
+              <select value={tempCategory} onChange={e => setTempCategory(e.target.value)} className="w-full px-6 sm:px-8 py-4 sm:py-6 bg-slate-50 border border-slate-100 rounded-2xl sm:rounded-3xl outline-none font-black uppercase text-[10px] sm:text-[11px] appearance-none">
                 {GALLERY_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
-              <button onClick={handleConfirmUpload} disabled={isSyncing} className="w-full bg-[#012616] text-white py-8 rounded-[2.5rem] font-black uppercase text-[11px] shadow-2xl flex items-center justify-center gap-4 hover:scale-[1.02] transition-all">
-                {isSyncing ? <RefreshCw className="animate-spin" /> : <><Check size={24} className="text-amber-400" /> Save to Archive</>}
+              <button onClick={handleConfirmUpload} disabled={isSyncing} className="w-full bg-[#012616] text-white py-6 sm:py-8 rounded-[1.5rem] sm:rounded-[2.5rem] font-black uppercase text-[10px] sm:text-[11px] shadow-2xl flex items-center justify-center gap-3 sm:gap-4 hover:scale-[1.02] transition-all">
+                {isSyncing ? <RefreshCw className="animate-spin" /> : <><Check size={20} className="text-amber-400 sm:w-6 sm:h-6" /> Save to Archive</>}
               </button>
             </div>
           </div>
@@ -129,13 +129,13 @@ const ImageGallery: React.FC<{ isAdmin: boolean; isAuthReady: boolean }> = ({ is
       )}
 
       {selectedImage && (
-        <div className="fixed inset-0 z-[2600] bg-black/98 backdrop-blur-3xl flex items-center justify-center p-8" onClick={() => setSelectedImage(null)}>
-          <button className="absolute top-12 right-12 text-white/40 hover:text-white"><X size={64} /></button>
-          <div className="max-w-7xl w-full flex flex-col items-center gap-16" onClick={e => e.stopPropagation()}>
-            <img src={selectedImage.url} className="max-h-[70vh] rounded-[4rem] shadow-2xl border-8 border-white/5" />
-            <div className="text-center">
-              <div className="px-6 py-2 bg-amber-500 rounded-full text-black text-[10px] font-black uppercase mb-6">{selectedImage.category}</div>
-              <p className="text-white text-4xl font-serif italic max-w-4xl leading-tight tracking-tight">"{selectedImage.caption}"</p>
+        <div className="fixed inset-0 z-[2600] bg-black/98 backdrop-blur-3xl flex items-center justify-center p-4 sm:p-8" onClick={() => setSelectedImage(null)}>
+          <button className="absolute top-6 right-6 sm:top-12 sm:right-12 text-white/40 hover:text-white p-2"><X size={32} className="sm:w-[64px] sm:h-[64px]" /></button>
+          <div className="max-w-7xl w-full flex flex-col items-center gap-8 md:gap-16 max-h-screen overflow-y-auto no-scrollbar" onClick={e => e.stopPropagation()}>
+            <img src={selectedImage.url} className="w-auto max-h-[60vh] md:max-h-[70vh] rounded-[2rem] md:rounded-[4rem] shadow-2xl border-4 md:border-8 border-white/5 object-contain" />
+            <div className="text-center px-4">
+              <div className="inline-block px-5 py-1.5 md:px-6 md:py-2 bg-amber-500 rounded-full text-black text-[8px] md:text-[10px] font-black uppercase mb-4 md:mb-6">{selectedImage.category}</div>
+              <p className="text-white text-xl md:text-4xl font-serif italic max-w-4xl leading-snug tracking-tight">"{selectedImage.caption}"</p>
             </div>
           </div>
         </div>
