@@ -35,20 +35,23 @@ const Countdown: React.FC<{ targetDate: string }> = ({ targetDate }) => {
 
   const items = [
     { label: 'Days', value: timeLeft.days },
-    { label: 'Hrs', value: timeLeft.hours },
-    { label: 'Mins', value: timeLeft.minutes },
-    { label: 'Secs', value: timeLeft.seconds },
+    { label: 'Hours', value: timeLeft.hours },
+    { label: 'Minutes', value: timeLeft.minutes },
+    { label: 'Seconds', value: timeLeft.seconds },
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-2 sm:gap-4 my-2 w-full max-w-sm mx-auto">
-      {items.map((item) => (
-        <div key={item.label} className="flex flex-col items-center">
-          <div className="bg-white border border-nysc-green/30 shadow-sm rounded-xl w-full h-10 sm:h-12 flex items-center justify-center mb-1 transition-all hover:border-amber-500">
-            <span className="text-sm sm:text-lg font-black text-nysc-green tracking-tight">{item.value}</span>
+    <div className="flex items-center justify-center gap-6 w-full">
+      {items.map((item, i) => (
+        <React.Fragment key={item.label}>
+          <div className="flex flex-col items-center">
+            <div className="text-3xl md:text-4xl font-black tracking-tighter mb-1">{item.value.toString().padStart(2, '0')}</div>
+            <span className="text-[7px] md:text-[8px] uppercase tracking-[0.3em] font-black opacity-40">{item.label}</span>
           </div>
-          <span className="text-[6px] md:text-[7px] uppercase tracking-widest text-gray-400 font-bold">{item.label}</span>
-        </div>
+          {i < items.length - 1 && (
+            <div className="text-2xl font-black opacity-20 mt-[-15px]">:</div>
+          )}
+        </React.Fragment>
       ))}
     </div>
   );
