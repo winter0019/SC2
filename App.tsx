@@ -170,7 +170,7 @@ const App: React.FC = () => {
     { year: '1998 - 2016', title: 'Foundational Leadership', location: 'ZAMFARA STATE', text: 'Began the journey of selfless service, spending nearly two decades in Zamfara serving as Zonal Inspector and Local Government Inspector.' },
     { year: '2016 - 2017', title: 'Strategic Assignment', location: 'KATSINA STATE', text: 'Brief yet impactful tenure contributing to the administrative excellence and early mobilization efforts at the Katsina Secretariat.' },
     { year: '2017 - 2019', title: 'Zonal Administration', location: 'KADUNA STATE', text: 'Oversaw critical operations and corps welfare in Kaduna, further solidifying a reputation for discipline and administrative prowess.' },
-    { year: '2019 - 2024', title: 'National Directorate (NDHQ)', location: 'ABUJA HQ', text: 'Appointed to critical roles in the Mobilization Department at the National Directorate Headquarters, rising to the rank of Deputy Director.' },
+    { year: '2020 - 2024', title: 'National Directorate (NDHQ)', location: 'ABUJA HQ', text: 'Appointed to critical roles in the Mobilization Department at the National Directorate Headquarters, rising to the rank of Deputy Director.' },
     { year: '2024 - 2026', title: 'State Coordinator Appointment', location: 'KATSINA STATE', text: 'Returned as the 20th State Coordinator, initiating a "Golden Era" of infrastructure development and staff welfare in Katsina.' }
   ];
 
