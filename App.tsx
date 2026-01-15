@@ -237,7 +237,7 @@ const App: React.FC = () => {
             <div className="h-[1px] w-12 bg-white/20"></div>
           </div>
 
-          <div className="grid grid-cols-4 gap-4 max-w-md mx-auto mb-16">
+          <div className="max-w-xl mx-auto mb-16 flex justify-center">
             <Countdown targetDate={config.retirementDate} />
           </div>
 
