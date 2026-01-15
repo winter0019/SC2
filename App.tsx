@@ -174,13 +174,6 @@ const App: React.FC = () => {
     { year: '2024', title: 'State Coordinator Appointment', location: 'KATSINA STATE', text: 'Appointed as the 20th State Coordinator, initiating the "Golden Era" of infrastructure and staff welfare in Katsina.' }
   ];
 
-  const metrics = [
-    { label: 'Mobilization', value: '98%', color: 'bg-emerald-500' },
-    { label: 'SAED Success', value: '92%', color: 'bg-amber-500' },
-    { label: 'Staff Welfare', value: '95%', color: 'bg-blue-500' },
-    { label: 'Infrastructure', value: '88%', color: 'bg-emerald-600' }
-  ];
-
   return (
     <div className={`min-h-screen bg-[#fafaf9] text-[#012616] selection:bg-amber-100 selection:text-amber-900 ${isAdmin ? 'pt-14' : ''}`}>
       {/* Admin Command Bar */}
@@ -321,44 +314,6 @@ const App: React.FC = () => {
                  </div>
                ))}
              </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Performance Metrics Section */}
-      <section className="py-32 bg-[#0c1410] text-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <div>
-              <span className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.5em] block mb-4">Efficiency Analytics</span>
-              <h2 className="text-5xl font-black tracking-tighter mb-8 leading-none">Performance Metrics</h2>
-              <p className="text-emerald-100/60 text-lg mb-12 font-medium">A data-driven view of excellence synced from the central repository.</p>
-              
-              <div className="grid grid-cols-2 gap-8">
-                {metrics.map((m, i) => (
-                  <div key={i} className="bg-white/5 p-8 rounded-3xl border border-white/10">
-                    <div className="text-4xl font-black mb-2">{m.value}</div>
-                    <div className="text-[10px] font-black uppercase tracking-widest opacity-40">{m.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="bg-[#012616] p-12 rounded-[3rem] shadow-2xl relative overflow-hidden">
-               <div className="space-y-8">
-                  {metrics.map((m, i) => (
-                    <div key={i}>
-                      <div className="flex justify-between items-center mb-3">
-                        <span className="text-[10px] font-black uppercase tracking-widest">{m.label}</span>
-                        <span className="text-xs font-black">{m.value}</span>
-                      </div>
-                      <div className="h-3 bg-white/5 rounded-full overflow-hidden">
-                        <div className={`h-full ${m.color} rounded-full`} style={{ width: m.value }}></div>
-                      </div>
-                    </div>
-                  ))}
-               </div>
-            </div>
           </div>
         </div>
       </section>
