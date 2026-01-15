@@ -41,15 +41,21 @@ const Countdown: React.FC<{ targetDate: string }> = ({ targetDate }) => {
   ];
 
   return (
-    <div className="flex items-center justify-center gap-6 w-full">
+    <div className="flex items-center justify-center gap-3 sm:gap-6 w-full max-w-full overflow-hidden px-2">
       {items.map((item, i) => (
         <React.Fragment key={item.label}>
-          <div className="flex flex-col items-center">
-            <div className="text-3xl md:text-4xl font-black tracking-tighter mb-1">{item.value.toString().padStart(2, '0')}</div>
-            <span className="text-[7px] md:text-[8px] uppercase tracking-[0.3em] font-black opacity-40">{item.label}</span>
+          <div className="flex flex-col items-center min-w-[50px] sm:min-w-[70px]">
+            <div className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter mb-1 leading-none">
+              {item.value.toString().padStart(2, '0')}
+            </div>
+            <span className="text-[6px] sm:text-[7px] md:text-[8px] uppercase tracking-[0.2em] sm:tracking-[0.3em] font-black opacity-40">
+              {item.label}
+            </span>
           </div>
           {i < items.length - 1 && (
-            <div className="text-2xl font-black opacity-20 mt-[-15px]">:</div>
+            <div className="text-xl sm:text-2xl font-black opacity-20 mt-[-10px] sm:mt-[-15px] select-none">
+              :
+            </div>
           )}
         </React.Fragment>
       ))}
