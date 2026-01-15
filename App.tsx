@@ -253,7 +253,7 @@ const App: React.FC = () => {
       {/* Biography Section */}
       <section id="biography" className="py-12 md:py-20 px-4 md:px-6 overflow-hidden">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-10 md:gap-12 items-center">
-          <div className="lg:col-span-8 space-y-6">
+          <div className="lg:col-span-9 space-y-6">
              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4 mb-2">
                <div className="p-2.5 md:p-3 bg-emerald-50 rounded-xl text-[#012616]">
                  <Milestone size={18} />
@@ -278,13 +278,13 @@ const App: React.FC = () => {
                 </div>
              </div>
           </div>
-          <div className="lg:col-span-4 relative">
-             <div className="max-w-[280px] sm:max-w-[320px] mx-auto lg:ml-auto relative aspect-[4/5] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border-4 md:border-8 border-white shadow-2xl">
+          <div className="lg:col-span-3 relative flex justify-center lg:justify-end">
+             <div className="max-w-[180px] sm:max-w-[220px] lg:max-w-full w-full relative aspect-[4/5] rounded-[1.25rem] md:rounded-[1.75rem] overflow-hidden border-4 md:border-6 border-white shadow-2xl">
                 <img src={profilePic} alt="Portrait" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#012616]/80 via-transparent to-transparent"></div>
-                <div className="absolute bottom-5 md:bottom-6 left-5 md:left-6 right-5 md:right-6">
-                   <p className="font-black text-sm md:text-base text-white font-serif italic mb-0.5">Alh. Ibrahim Saidu</p>
-                   <p className="text-[7px] text-amber-400 font-black uppercase tracking-[0.2em]">Distinguished State Coordinator</p>
+                <div className="absolute bottom-4 left-4 right-4">
+                   <p className="font-black text-xs md:text-sm text-white font-serif italic mb-0.5">Alh. Ibrahim Saidu</p>
+                   <p className="text-[6px] text-amber-400 font-black uppercase tracking-[0.2em]">Distinguished State Coordinator</p>
                 </div>
              </div>
           </div>
