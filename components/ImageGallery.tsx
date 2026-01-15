@@ -14,6 +14,7 @@ interface GalleryImage {
 
 const ImageGallery: React.FC<{ isAdmin: boolean; isAuthReady: boolean }> = ({ isAdmin, isAuthReady }) => {
   const [images, setImages] = useState<GalleryImage[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [uploadingFile, setUploadingFile] = useState<{url: string, file: File | null} | null>(null);
@@ -28,8 +29,10 @@ const ImageGallery: React.FC<{ isAdmin: boolean; isAuthReady: boolean }> = ({ is
     const q = query(collection(db, 'gallery'), orderBy('timestamp', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setImages(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as GalleryImage[]);
+      setLoading(false);
     }, (err) => {
       console.error("Gallery Sync Error:", err);
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -85,26 +88,34 @@ const ImageGallery: React.FC<{ isAdmin: boolean; isAuthReady: boolean }> = ({ is
 
       <input type="file" ref={fileInputRef} className="hidden" onChange={handleFilePick} accept="image/*" />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 md:gap-8">
-        {filteredImages.length === 0 ? (
-          <div className="col-span-full py-12 md:py-16 text-center text-gray-300 font-black uppercase tracking-widest text-[9px] md:text-[11px]">No entries found in this archive.</div>
-        ) : (
-          filteredImages.map((image) => (
-            <div key={image.id} className="group relative aspect-[4/5] overflow-hidden rounded-[1.75rem] md:rounded-[2.5rem] bg-gray-50 cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-700 border-4 md:border-[6px] border-white" onClick={() => setSelectedImage(image)}>
-              <img src={image.url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" loading="lazy" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#012616] via-[#012616]/20 to-transparent opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5 md:p-8">
-                <span className="text-amber-400 text-[6px] md:text-[7px] font-black uppercase tracking-[0.4em] mb-1.5 md:mb-2">{image.category}</span>
-                <p className="text-white text-sm md:text-base font-black font-serif italic leading-tight line-clamp-2">{image.caption}</p>
+      {loading ? (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 md:gap-8">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="aspect-[4/5] rounded-[1.75rem] md:rounded-[2.5rem] bg-slate-100 animate-pulse border-4 md:border-[6px] border-white shadow-sm" />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 md:gap-8">
+          {filteredImages.length === 0 ? (
+            <div className="col-span-full py-12 md:py-16 text-center text-gray-300 font-black uppercase tracking-widest text-[9px] md:text-[11px]">No entries found in this archive.</div>
+          ) : (
+            filteredImages.map((image) => (
+              <div key={image.id} className="group relative aspect-[4/5] overflow-hidden rounded-[1.75rem] md:rounded-[2.5rem] bg-gray-50 cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-700 border-4 md:border-[6px] border-white" onClick={() => setSelectedImage(image)}>
+                <img src={image.url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" loading="lazy" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#012616] via-[#012616]/20 to-transparent opacity-0 sm:group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5 md:p-8">
+                  <span className="text-amber-400 text-[6px] md:text-[7px] font-black uppercase tracking-[0.4em] mb-1.5 md:mb-2">{image.category}</span>
+                  <p className="text-white text-sm md:text-base font-black font-serif italic leading-tight line-clamp-2">{image.caption}</p>
+                </div>
+                {isAdmin && (
+                  <button onClick={(e) => { e.stopPropagation(); if(confirm("Delete entry?")) deleteDoc(doc(db, 'gallery', image.id)); }} className="absolute top-3 right-3 p-2 bg-red-600 text-white rounded-lg opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 shadow-2xl">
+                    <Trash2 size={12} />
+                  </button>
+                )}
               </div>
-              {isAdmin && (
-                <button onClick={(e) => { e.stopPropagation(); if(confirm("Delete entry?")) deleteDoc(doc(db, 'gallery', image.id)); }} className="absolute top-3 right-3 p-2 bg-red-600 text-white rounded-lg opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500 shadow-2xl">
-                  <Trash2 size={12} />
-                </button>
-              )}
-            </div>
-          ))
-        )}
-      </div>
+            ))
+          )}
+        </div>
+      )}
 
       {uploadingFile && (
         <div className="fixed inset-0 z-[2500] flex items-center justify-center p-4 bg-[#012616]/98 backdrop-blur-3xl">

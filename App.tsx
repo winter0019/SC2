@@ -48,7 +48,10 @@ const App: React.FC = () => {
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<'online' | 'offline' | 'error'>('online');
   
-  const [profilePic, setProfilePic] = useState('https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600');
+  // Start with null to prevent "async data flash" of old content
+  const [profilePic, setProfilePic] = useState<string | null>(null);
+  const [isConfigLoading, setIsConfigLoading] = useState(true);
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [config, setConfig] = useState({
@@ -95,12 +98,17 @@ const App: React.FC = () => {
       if (err.code === 'permission-denied') setConnectionStatus('error');
     });
 
+    // Authority source: Firestore Config
     const unsubscribeConfig = onSnapshot(doc(db, 'config', 'site_settings'), (snap) => {
       if (snap.exists()) {
         const data = snap.data();
         setConfig(prev => ({ ...prev, ...data }));
         if (data.profilePic) setProfilePic(data.profilePic);
       }
+      setIsConfigLoading(false);
+    }, (err) => {
+      console.error("Config Sync Error:", err);
+      setIsConfigLoading(false);
     });
 
     return () => {
@@ -207,11 +215,21 @@ const App: React.FC = () => {
           </div>
 
           <div className="mb-10 relative">
-            <div className="w-40 h-40 md:w-56 md:h-56 mx-auto rounded-full border-[10px] border-white/5 p-2 bg-gradient-to-tr from-[#012616] to-[#0c4028] shadow-2xl relative">
-              <img src={profilePic} className="w-full h-full object-cover rounded-full shadow-inner grayscale-[30%] hover:grayscale-0 transition-all duration-700" />
-              <div className="absolute -bottom-2 -right-2 bg-amber-500 text-black w-10 h-10 rounded-full flex items-center justify-center shadow-2xl border-4 border-[#012616]">
-                <Award size={18} fill="currentColor" />
-              </div>
+            <div className="w-40 h-40 md:w-56 md:h-56 mx-auto rounded-full border-[10px] border-white/5 p-2 bg-gradient-to-tr from-[#012616] to-[#0c4028] shadow-2xl relative overflow-hidden">
+              {isConfigLoading ? (
+                <div className="w-full h-full bg-white/10 animate-pulse rounded-full" />
+              ) : (
+                <img 
+                  src={profilePic || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600'} 
+                  className="w-full h-full object-cover rounded-full shadow-inner grayscale-[30%] hover:grayscale-0 transition-all duration-700" 
+                  alt="Alhaji Saidu"
+                />
+              )}
+              {!isConfigLoading && (
+                <div className="absolute -bottom-2 -right-2 bg-amber-500 text-black w-10 h-10 rounded-full flex items-center justify-center shadow-2xl border-4 border-[#012616]">
+                  <Award size={18} fill="currentColor" />
+                </div>
+              )}
             </div>
           </div>
 
@@ -418,12 +436,22 @@ const App: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
              <div className="relative">
-                <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border-[12px] border-white/5 grayscale-[50%]">
-                   <img src={profilePic} className="w-full h-full object-cover" />
+                <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border-[12px] border-white/5 relative">
+                   {isConfigLoading ? (
+                     <div className="w-full h-full bg-white/10 animate-pulse" />
+                   ) : (
+                     <img 
+                       src={profilePic || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600'} 
+                       className="w-full h-full object-cover grayscale-[50%]" 
+                       alt="Alhaji Saidu"
+                     />
+                   )}
                 </div>
-                <div className="absolute -bottom-10 -right-10 bg-amber-500 w-40 h-40 rounded-[2rem] flex items-center justify-center shadow-2xl rotate-6">
-                   <Award size={64} className="text-[#012616]" fill="currentColor" />
-                </div>
+                {!isConfigLoading && (
+                  <div className="absolute -bottom-10 -right-10 bg-amber-500 w-40 h-40 rounded-[2rem] flex items-center justify-center shadow-2xl rotate-6">
+                    <Award size={64} className="text-[#012616]" fill="currentColor" />
+                  </div>
+                )}
              </div>
              
              <div>
