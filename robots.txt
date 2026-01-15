@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://20thsc.netlify.app/sitemap.xml
