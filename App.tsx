@@ -167,11 +167,11 @@ const App: React.FC = () => {
   };
 
   const careerMilestones = [
-    { year: '1998', title: 'Career Genesis', location: 'NYSC HEADQUARTERS', text: 'Began the journey of selfless service as a young officer dedicated to the National Youth Service Corps.' },
-    { year: '2005-2012', title: 'Zonal Leadership', location: 'ZAMFARA & KADUNA', text: 'Served as Zonal Inspector and Local Government Inspector, directly overseeing the welfare of thousands of corps members.' },
-    { year: '2015', title: 'Mobilization Expert', location: 'ABUJA HQ', text: 'Appointed to critical roles in the Mobilization Department, ensuring the integrity of graduate calls to service across Nigeria.' },
-    { year: '2022', title: 'Deputy Director Rank', location: 'NATIONAL DIRECTORATE', text: 'Promoted to Deputy Director in recognition of exemplary discipline, administrative prowess, and loyalty to the scheme.' },
-    { year: '2024', title: 'State Coordinator Appointment', location: 'KATSINA STATE', text: 'Appointed as the 20th State Coordinator, initiating the "Golden Era" of infrastructure and staff welfare in Katsina.' }
+    { year: '1998 - 2016', title: 'Foundational Leadership', location: 'ZAMFARA STATE', text: 'Began the journey of selfless service, spending nearly two decades in Zamfara serving as Zonal Inspector and Local Government Inspector.' },
+    { year: '2016 - 2017', title: 'Strategic Assignment', location: 'KATSINA STATE', text: 'Brief yet impactful tenure contributing to the administrative excellence and early mobilization efforts at the Katsina Secretariat.' },
+    { year: '2017 - 2019', title: 'Zonal Administration', location: 'KADUNA STATE', text: 'Oversaw critical operations and corps welfare in Kaduna, further solidifying a reputation for discipline and administrative prowess.' },
+    { year: '2019 - 2024', title: 'National Directorate (NDHQ)', location: 'ABUJA HQ', text: 'Appointed to critical roles in the Mobilization Department at the National Directorate Headquarters, rising to the rank of Deputy Director.' },
+    { year: '2024 - 2026', title: 'State Coordinator Appointment', location: 'KATSINA STATE', text: 'Returned as the 20th State Coordinator, initiating a "Golden Era" of infrastructure development and staff welfare in Katsina.' }
   ];
 
   return (
